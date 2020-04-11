@@ -12,11 +12,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "4.17.1"
   },
   "devDependencies": {
     "@types/workbox-sw": "4.3.0",
-    "copyfiles": "^1.2.0",
-    "workbox-cli": "^3.5.0"
+    "copyfiles": "2.2.0",
+    "workbox-cli": "5.1.2"
   }
 }
