@@ -13,11 +13,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.5.0/workbox-sw.js');
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
 if (workbox) {
     console.log(`Yay! Workbox is loaded 🎉`);
     workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
+
+    workbox.routing.registerRoute(
+        /(.*)articles(.*)\.(?:png|gif|jpg)/,
+        new workbox.strategies.CacheFirst({
+            cacheName: 'images-cache',
+            plugins: [
+                new workbox.expiration.ExpirationPlugin({
+                    maxEntries: 50,
+                    maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
+                })
+            ]
+        })
+    );
 } else {
     console.log(`Boo! Workbox didn't load 😬`);
 }
