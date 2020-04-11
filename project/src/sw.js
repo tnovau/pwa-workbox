@@ -42,7 +42,27 @@ if (workbox) {
                 })
             ]
         })
-    )
+    );
+
+    const articleHandler = new workbox.strategies.NetworkFirst({
+        cacheName: 'articles-cache',
+        plugins: [
+            new workbox.expiration.ExpirationPlugin({
+                maxEntries: 50
+            })
+        ]
+    });
+
+    workbox.routing.registerRoute(/(.*)article(.*)\.html/, args => {
+        return articleHandler.handle(args).then(response => {
+            if (!response) {
+                return caches.match('pages/offline.html');
+            } else if (response.status === 404) {
+                return caches.match('pages/404.html');
+            }
+            return response;
+        });
+    });
 } else {
     console.log(`Boo! Workbox didn't load 😬`);
 }
