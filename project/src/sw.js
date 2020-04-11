@@ -31,6 +31,18 @@ if (workbox) {
             ]
         })
     );
+
+    workbox.routing.registerRoute(
+        /images\/icon\/*/,
+        new workbox.strategies.StaleWhileRevalidate({
+            cacheName: 'icon-cache',
+            plugins: [
+                new workbox.expiration.ExpirationPlugin({
+                    maxEntries: 5
+                })
+            ]
+        })
+    )
 } else {
     console.log(`Boo! Workbox didn't load 😬`);
 }
